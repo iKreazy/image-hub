@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Pinterest Diploma Design</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"/>
+	<link href="css/fonts.css" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+	<div id="sidebar" class="sidebar offcanvas offcanvas-start show" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1">
+		<a class="btn sidebar-toggle nav-close d-sm-none" data-bs-toggle="offcanvas" href="#sidebar" role="button" aria-controls="sidebar">
+			<i class="bi bi-x-circle"></i>
+		</a>
+		<div class="nav-profile">
+			<div class="avatar">
+				<img src="img/avatar.jpg" class="object-fit-cover" alt="Username">
+			</div>
+			<div class="fullname">Wade Warren</div>
+			<div class="username">@wadewarren</div>
+			<div class="posts">35 Posts</div>
+		</div>
+		<div class="offcanvas-body">
+			<ul class="sidebar-menu">
+				<li class="nav-item">
+					<a href="#" class="active">
+						<i class="bi bi-house-fill"></i>
+						<span class="nav-title">Home</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="#">
+						<i class="bi bi-clock-fill"></i>
+						<span class="nav-title">Recents</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="#">
+						<i class="bi bi-bookmarks-fill"></i>
+						<span class="nav-title">Categories</span>
+					</a>
+				</li>
+			</ul>
+			<div class="hr-line"></div>
+			<ul class="sidebar-menu sidebar-categories">
+				<li><a href="#"><span class="nav-title">Design</span></a></li>
+				<li><a href="#" class="active"><span class="nav-title">Art</span></a></li>
+				<li><a href="#"><span class="nav-title">Music</span></a></li>
+				<li><a href="#"><span class="nav-title">Pixel</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="page-container">
+		<div class="header">
+			<div class="container-fluid">
+				<div>
+					<a class="btn sidebar-toggle" data-bs-toggle="offcanvas" href="#sidebar" role="button" aria-controls="sidebar">
+						<i class="bi bi-list"></i>
+					</a>
+					<a class="navbar-brand" href="#">
+						<img src="img/logotype.png" alt="" width="32" height="32">
+					</a>
+				</div>
+				<form class="search-form">
+					<div class="search-group">
+						<input class="form-control" type="search" list="datalistOptions" id="exampleDataList" placeholder="Search">
+						<i class="bi bi-search"></i>
+					</div>
+					<datalist id="datalistOptions">
+						<option value="Москва">
+						<option value="Санкт-Петербург">
+						<option value="Брянск">
+						<option value="Екатеринбург">
+						<option value="Волгоград">
+					</datalist>
+					<button class="d-none" type="submit"></button>
+				</form>
+				<div>
+					<ul class="navbar-nav">
+						<li class="nav-item dropdown">
+							<a class="nav-link nav-profile" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<img src="img/avatar.jpg" class="object-fit-cover" alt="">
+								<i class="bi bi-chevron-down"></i>
+							</a>
+							<ul class="dropdown-menu">
+							<li><a class="dropdown-item" href="#"><i class="bi bi-images"></i>My images</a></li>
+							<li><a class="dropdown-item" href="#"><i class="bi bi-gear-wide-connected"></i>Settings</a></li>
+							<li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i>Log out</a></li>
+							</ul>
+						</li>
+					</ul>
+					<div class="sign-btns d-none d-sm-flex">
+						<a class="btn btn-primary" href="#">Sign In</a>
+						<a class="btn btn-secondary" href="#">Sign Up</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<main class="main-content items-board" style="display: none">
+			<div class="container-fluid">
+				<div class="row" data-masonry='{"percentPosition": true }'>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/1.jpg" alt="">
+								<span class="card-description">Alice, in a few minutes she tucked away, even with a wretched height to be getting very few minutes to beat him his hands; 'so I must have no idea that used to be full of MINE.</span>
+							</a>
+							<a class="card-author" href="#">
+								<img src="img/avatar/1.jpg" alt="">
+								<div class="d-flex">
+									<span class="name">Justin Walter</span>
+									<span class="time">5 min ago</span>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/2.jpg" alt="">
+								<span class="card-description">Mary Ann, what to you by this moment down on one of the pool rippling to see what the answer to my dear,' said to give them with the great hurry and the neighbouring pool-she could not...</span>
+							</a>
+							<a class="card-author" href="#">
+								<img src="img/avatar/2.jpg" alt="">
+								<div class="d-flex">
+									<span class="name">Ethan Arthurs</span>
+									<span class="time">30 min ago</span>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/3.jpg" alt="">
+								<span class="card-description">I am now? That'll be no result seemed to fancy to go! Let this time when I fell asleep instantly, and she got much the Mouse gave him when you know.</span>
+							</a>
+							<a class="card-author" href="#">
+								<img src="img/avatar/3.jpg" alt="">
+								<div class="d-flex">
+									<span class="name">Yuliya Kirk</span>
+									<span class="time">1 hour ago</span>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/4.jpg" alt="">
+								<span class="card-description">The King triumphantly, pointing to herself, 'I can't understand why it further. So you talking together: she knows such nonsense!' said 'That's different person then.</span>
+							</a>
+							<a class="card-author" href="#">
+								<img src="img/avatar/4.jpg" alt="">
+								<div class="d-flex">
+									<span class="name">Juan Carter</span>
+									<span class="time">4 hours ago</span>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/5.jpg" alt="">
+								<span class="card-description">King, and came upon their eyes very good-naturedly began very neatly and music.' 'Ah! that she said Alice, 'because I'm here!</span>
+							</a>
+							<a class="card-author" href="#">
+								<img src="img/avatar/5.jpg" alt="">
+								<div class="d-flex">
+									<span class="name">John Becker</span>
+									<span class="time">8 hours ago</span>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/6.jpg" alt="">
+								<span class="card-description">Digging for it, never had a pair of cardboard.) 'All right,' said the oldest rule in a sharp little crocodile Improve his cup of the look-out for catching mice you to dream...</span>
+							</a>
+							<a class="card-author" href="#">
+								<img src="img/avatar/6.jpg" alt="">
+								<div class="d-flex">
+									<span class="name">Martina Creighton</span>
+									<span class="time">2024-08-14 08:33</span>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/7.jpg" alt="">
+								<span class="card-description">There's certainly there was appealed to the Mouse was silence instantly, and say it in a dead silence. 'What HAVE their faces, so she added in talking to?</span>
+							</a>
+							<a class="card-author" href="#">
+								<img src="img/avatar/7.jpg" alt="">
+								<div class="d-flex">
+									<span class="name">Awa Hawkins</span>
+									<span class="time">2024-08-13 20:05</span>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/8.jpg" alt="">
+								<span class="card-description">Alice quite dull and furrows; the Gryphon. 'I've seen a voice sometimes shorter, until there was more there was beginning to get ready to the best way of the air, and knocked.</span>
+							</a>
+							<a class="card-author" href="#">
+								<img src="img/avatar/8.jpg" alt="">
+								<div class="d-flex">
+									<span class="name">Vladimir Evans</span>
+									<span class="time">2024-08-13 12:34</span>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/9.jpg" alt="">
+								<span class="card-description">I ought to send the King hastily dried her age as he said the Queen smiled in the Gryphon. 'Do you join the cook tulip-roots instead of me by talking again.</span>
+							</a>
+							<a class="card-author" href="#">
+								<img src="img/avatar/9.jpg" alt="">
+								<div class="d-flex">
+									<span class="name">Benjamin Clapton</span>
+									<span class="time">2024-08-12 18:12</span>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<main class="main-content sign-content" style="display: none;">
+			<div class="container-fluid">
+				<div class="row g-3 g-sm-5 align-items-center justify-content-center p-sm-5">
+					<div class="col-md-8 col-lg-6 sign-description">
+						<h1 class="title">Sign In<br><span class="text-primary">to start posting your images</span></h1>
+						<p class="d-none d-lg-block info">ImageHub is a user-driven platform designed to simplify the process of sharing and discovering captivating images. Users can effortlessly upload their photos, complete with descriptions, to create a personal gallery or contribute to the community's growing collection. The platform allows for seamless browsing, enabling visitors to explore a diverse range of images uploaded by other users.</p>
+					</div>
+					<div class="col-md-8 col-lg-6">
+						<div class="card">
+							<div class="card-body p-4">
+								<form>
+									<div class="row mb-3">
+										<div class="col">
+											<div>
+												<label for="inputFirstname" class="form-label">First name</label>
+												<input type="text" class="form-control" id="inputFirstname" placeholder="Justin">
+											</div>
+										</div>
+										<div class="col">
+											<div>
+												<label for="inputLastname" class="form-label">Last name</label>
+												<input type="text" class="form-control" id="inputLastname" placeholder="Walter">
+											</div>
+										</div>
+									</div>
+									<div class="mb-3">
+										<label for="inputEmail" class="form-label">Email address</label>
+										<input type="email" id="inputEmail" class="form-control" placeholder="justin.walter@email.com">
+									</div>
+									<div class="mb-3">
+										<label for="inputUsername" class="form-label">Username</label>
+										<input type="text" id="inputUsername" class="form-control" placeholder="justinwalter">
+									</div>
+									<div class="mb-3">
+										<label for="inputPassword" class="form-label">Password</label>
+										<input type="password" id="inputPassword" class="form-control" placeholder="••••••••">
+									</div>
+									<div class="mb-3">
+										<label for="inputPasswordRepeat" class="form-label">Re-enter password</label>
+										<input type="password" id="inputPasswordRepeat" class="form-control" placeholder="••••••••">
+									</div>
+									<div class="text-center mb-2">
+										<button type="submit" class="btn btn-primary px-5">Sign up</button>
+									</div>
+									<div class="text-center">
+										<span>Already have an account?</span>
+										<a href="#" class="fw-medium text-decoration-none">Login</a>
+									</div>
+									<div class="text-center" style="display: none;">
+										<span>Don't have an account?</span>
+										<a href="#" class="fw-medium text-decoration-none">Register</a>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<main class="main-content items-board profile-content" style="display: none;">
+			<div class="container-fluid">
+				<div class="row align-items-center justify-content-center mt-3 mb-5">
+					<div class="col-lg-6">
+						<div class="profile-info">
+							<div class="avatar">
+								<img src="img/avatar.jpg" class="object-fit-cover" alt="">
+							</div>
+							<div class="info">
+								<div class="fullname">Wade Warren</div>
+								<div class="username">@wadewarren</div>
+								<div class="posts">35 Posts</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row" data-masonry='{"percentPosition": true }'>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/1.jpg" alt="">
+								<span class="card-description">Alice, in a few minutes she tucked away, even with a wretched height to be getting very few minutes to beat him his hands; 'so I must have no idea that used to be full of MINE.</span>
+							</a>
+							<a class="card-category" href="#">Cars</a>
+							<a class="card-date" href="#">5 min ago</a>
+							<div class="card-action dropdown">
+								<button type="button" class="btn btn-outline-light card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+								<ul class="dropdown-menu" style="">
+									<li><a class="dropdown-item" href="#"><i class="bi bi-pen"></i>Edit</a></li>
+									<li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i>Delete</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/2.jpg" alt="">
+								<span class="card-description">Mary Ann, what to you by this moment down on one of the pool rippling to see what the answer to my dear,' said to give them with the great hurry and the neighbouring pool-she could not...</span>
+							</a>
+							<a class="card-category" href="#">Cars</a>
+							<a class="card-date" href="#">30 min ago</a>
+							<div class="card-action dropdown">
+								<button type="button" class="btn btn-outline-light card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+								<ul class="dropdown-menu" style="">
+									<li><a class="dropdown-item" href="#"><i class="bi bi-pen"></i>Edit</a></li>
+									<li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i>Delete</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/3.jpg" alt="">
+								<span class="card-description">I am now? That'll be no result seemed to fancy to go! Let this time when I fell asleep instantly, and she got much the Mouse gave him when you know.</span>
+							</a>
+							<a class="card-category" href="#">Animals</a>
+							<a class="card-date" href="#">1 hour ago</a>
+							<div class="card-action dropdown">
+								<button type="button" class="btn btn-outline-light card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+								<ul class="dropdown-menu" style="">
+									<li><a class="dropdown-item" href="#"><i class="bi bi-pen"></i>Edit</a></li>
+									<li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i>Delete</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/4.jpg" alt="">
+								<span class="card-description">The King triumphantly, pointing to herself, 'I can't understand why it further. So you talking together: she knows such nonsense!' said 'That's different person then.</span>
+							</a>
+							<a class="card-category" href="#">Technologies</a>
+							<a class="card-date" href="#">4 hours ago</a>
+							<div class="card-action dropdown">
+								<button type="button" class="btn btn-outline-light card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+								<ul class="dropdown-menu" style="">
+									<li><a class="dropdown-item" href="#"><i class="bi bi-pen"></i>Edit</a></li>
+									<li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i>Delete</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/5.jpg" alt="">
+								<span class="card-description">King, and came upon their eyes very good-naturedly began very neatly and music.' 'Ah! that she said Alice, 'because I'm here!</span>
+							</a>
+							<a class="card-category" href="#">Games</a>
+							<a class="card-date" href="#">8 hours ago</a>
+							<div class="card-action dropdown">
+								<button type="button" class="btn btn-outline-light card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+								<ul class="dropdown-menu" style="">
+									<li><a class="dropdown-item" href="#"><i class="bi bi-pen"></i>Edit</a></li>
+									<li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i>Delete</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="end-posts">End of posts</div>
+			</div>
+		</main>
+		<main class="main-content item-open items-board" style="display: none;">
+			<div class="container-fluid">
+				<div class="row align-items-center justify-content-center mt-3 mb-5">
+					<div class="card-column-size col-md-7">
+						<article class="card">
+							<img src="img/post/2.jpg" class="card-image">
+							<div class="card-body">
+								<div class="card-head">
+									<a class="card-author" href="#">
+										<img src="img/avatar/2.jpg" alt="">
+										<div class="d-flex">
+											<span class="name">Benjamin Clapton</span>
+											<span class="time">2024-08-12 18:12</span>
+										</div>
+									</a>
+									<div class="card-action">
+										<button type="button" class="btn btn-secondary card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+										<ul class="dropdown-menu" style="">
+											<li><a class="dropdown-item" href="#"><i class="bi bi-pen"></i>Edit</a></li>
+											<li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i>Delete</a></li>
+										</ul>
+									</div>
+								</div>
+								<p class="card-description">Alice, in a few minutes she tucked away, even with a wretched height to be getting very few minutes to beat him his hands; 'so I must have no idea that used to be full of MINE.</p>
+								<a class="card-category btn btn-sm btn-primary" href="#">Cars</a>
+							</div>
+						</article>
+					</div>
+					<div class="page-navigation">
+						<a href="#" class="btn btn-secondary page-prev"><i class="bi bi-arrow-left-short"></i></a>
+						<a href="#" class="btn btn-secondary page-next"><i class="bi bi-arrow-right-short"></i></a>
+					</div>
+				</div>
+				<div class="title-posts">More images by Benjamin Clapton</div>
+				<div class="row" data-masonry='{"percentPosition": true }'>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/1.jpg" alt="">
+								<span class="card-description">Alice, in a few minutes she tucked away, even with a wretched height to be getting very few minutes to beat him his hands; 'so I must have no idea that used to be full of MINE.</span>
+							</a>
+							<a class="card-category" href="#">Cars</a>
+							<a class="card-date" href="#">5 min ago</a>
+							<div class="card-action dropdown">
+								<button type="button" class="btn btn-outline-light card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+								<ul class="dropdown-menu" style="">
+									<li><a class="dropdown-item" href="#"><i class="bi bi-pen"></i>Edit</a></li>
+									<li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i>Delete</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/2.jpg" alt="">
+								<span class="card-description">Mary Ann, what to you by this moment down on one of the pool rippling to see what the answer to my dear,' said to give them with the great hurry and the neighbouring pool-she could not...</span>
+							</a>
+							<a class="card-category" href="#">Cars</a>
+							<a class="card-date" href="#">30 min ago</a>
+							<div class="card-action dropdown">
+								<button type="button" class="btn btn-outline-light card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+								<ul class="dropdown-menu" style="">
+									<li><a class="dropdown-item" href="#"><i class="bi bi-pen"></i>Edit</a></li>
+									<li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i>Delete</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/3.jpg" alt="">
+								<span class="card-description">I am now? That'll be no result seemed to fancy to go! Let this time when I fell asleep instantly, and she got much the Mouse gave him when you know.</span>
+							</a>
+							<a class="card-category" href="#">Animals</a>
+							<a class="card-date" href="#">1 hour ago</a>
+							<div class="card-action dropdown">
+								<button type="button" class="btn btn-outline-light card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+								<ul class="dropdown-menu" style="">
+									<li><a class="dropdown-item" href="#"><i class="bi bi-pen"></i>Edit</a></li>
+									<li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i>Delete</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/4.jpg" alt="">
+								<span class="card-description">The King triumphantly, pointing to herself, 'I can't understand why it further. So you talking together: she knows such nonsense!' said 'That's different person then.</span>
+							</a>
+							<a class="card-category" href="#">Technologies</a>
+							<a class="card-date" href="#">4 hours ago</a>
+							<div class="card-action dropdown">
+								<button type="button" class="btn btn-outline-light card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+								<ul class="dropdown-menu" style="">
+									<li><a class="dropdown-item" href="#"><i class="bi bi-pen"></i>Edit</a></li>
+									<li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i>Delete</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<main class="main-content items-board items-category" style="display: none;">
+			<div class="container-fluid">
+				<div class="row" data-masonry='{"percentPosition": true }'>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/1.jpg" alt="">
+								<span class="title-category">Cars<span class="count-posts">(22)</span></span>
+							</a>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/3.jpg" alt="">
+								<span class="title-category">Animals<span class="count-posts">(42)</span></span>
+							</a>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/4.jpg" alt="">
+								<span class="title-category">Technologies<span class="count-posts">(105)</span></span>
+							</a>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+						<div class="card-item">
+							<a class="card-pin" href="#">
+								<img src="img/post/5.jpg" alt="">
+								<span class="title-category">Games<span class="count-posts">(5)</span></span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<main class="main-content profile-edit">
+			<div class="container-fluid">
+				<div class="row align-items-center justify-content-center mt-3 mb-5">
+					<div class="col-md-10 col-lg-10 col-xl-8">
+						<div class="card">
+							<form id="my-dropzone" novalidate>
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="card-body h-100 pe-lg-0 d-flex justify-content-center align-items-center">
+											<div class="card-upload dz-message" id="dropzone-container">
+												<input type="file" name="file" class="d-none" id="hidden-file-input">
+												<img class="default-image" src="img/avatar/8.jpg" alt="">
+												<img class="upload-image" src="#" alt="">
+												<button type="button" class="upload-remove btn btn-outline-light"><i class="bi bi-trash"></i></button>
+												<div class="upload-drop">
+													<i class="upload-icon bi bi-cloud-arrow-up"></i>
+													<span class="label">Drag and drop</span>
+													<button class="btn btn-secondary" type="button">Upload</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="card-body">
+											<div class="row mb-3">
+												<div class="col">
+													<div>
+														<label for="inputFirstname" class="form-label">First name</label>
+														<input type="text" class="form-control" id="inputFirstname" value="Benjamin">
+													</div>
+												</div>
+												<div class="col">
+													<div>
+														<label for="inputLastname" class="form-label">Last name</label>
+														<input type="text" class="form-control" id="inputLastname" value="Clapton">
+													</div>
+												</div>
+											</div>
+											<div class="mb-3">
+												<label for="inputEmail" class="form-label">Email address</label>
+												<input type="email" id="inputEmail" class="form-control" value="benjamin.clapton@email.com">
+											</div>
+											<div class="mb-3">
+												<label for="inputUsername" class="form-label">Username</label>
+												<input type="text" id="inputUsername" class="form-control" value="benjton">
+											</div>
+											<hr>
+											<div class="mb-3">
+												<label for="inputPasswordCurrent" class="form-label">Current password</label>
+												<input type="password" id="inputPasswordCurrent" class="form-control" placeholder="••••••••">
+											</div>
+											<div class="mb-3">
+												<label for="inputPassword" class="form-label">Password</label>
+												<input type="password" id="inputPassword" class="form-control" placeholder="••••••••">
+											</div>
+											<div class="mb-3">
+												<label for="inputPasswordRepeat" class="form-label">Re-enter password</label>
+												<input type="password" id="inputPasswordRepeat" class="form-control" placeholder="••••••••">
+											</div>
+											<button class="btn btn-primary px-5" type="submit">Save</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<main class="main-content item-upload">
+			<div class="container-fluid">
+				<div class="row align-items-center justify-content-center mt-3 mb-5">
+					<div class="col-md-10 col-lg-10 col-xl-8">
+						<div class="card">
+							<form id="my-dropzone" novalidate>
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="card-body h-100 pe-lg-0">
+											<div class="card-upload dz-message" id="dropzone-container">
+												<input type="file" name="file" class="d-none" id="hidden-file-input">
+												<img class="upload-image" src="#" alt="">
+												<button type="button" class="upload-remove btn btn-secondary"><i class="bi bi-trash"></i></button>
+												<div class="upload-drop">
+													<i class="upload-icon bi bi-cloud-arrow-up"></i>
+													<span class="label">Drag and drop</span>
+													<button class="btn btn-primary" type="button">Upload</button>
+													<div class="alert">PNG, JPEG are supported</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="card-body">
+											<select class="form-select mb-3">
+												<option selected>Select category</option>
+												<option value="1">Cars</option>
+												<option value="2">Animals</option>
+												<option value="3">Games</option>
+											</select>
+											<div class="mb-3">
+												<label for="inputDescription" class="form-label">Description</label>
+												<textarea id="inputDescription" class="form-control" placeholder="Add a description to your image" style="height: 200px"></textarea>
+											</div>
+											<button class="btn btn-primary px-5" type="submit">Post it</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" async></script>
+	<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
