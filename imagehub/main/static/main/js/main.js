@@ -95,47 +95,49 @@ document.addEventListener('DOMContentLoaded', () => {
   triggerResizeEvent();
   setTimeout(() => { triggerResizeEvent(); }, 200);
 
-  Dropzone.autoDiscover = false;
-  const myDropzone = new Dropzone("#my-dropzone", {
-    url: '/',
-    autoProcessQueue: false,
-    uploadMultiple: false,
-    acceptedFiles: 'image/jpeg,image/png',
-    maxFiles: 1,
-    previewsContainer: false,
-    init: function () {
-      const dropzone = this;
-      const cardUpload = document.getElementById('dropzone-container');
-      const hiddenFileInput = document.getElementById('hidden-file-input');
-      const previewImage = document.querySelector('.upload-image');
-      const removeButton = document.querySelector('.upload-remove');
-      const uploadDrop = document.querySelector('.upload-drop');
-      const defaultContent = cardUpload.innerHTML;
+  if (document.getElementById('my-dropzone')) {
+    Dropzone.autoDiscover = false;
+    const myDropzone = new Dropzone("#my-dropzone", {
+      url: '/',
+      autoProcessQueue: false,
+      uploadMultiple: false,
+      acceptedFiles: 'image/jpeg,image/png',
+      maxFiles: 1,
+      previewsContainer: false,
+      init: function () {
+        const dropzone = this;
+        const cardUpload = document.getElementById('dropzone-container');
+        const hiddenFileInput = document.getElementById('hidden-file-input');
+        const previewImage = document.querySelector('.upload-image');
+        const removeButton = document.querySelector('.upload-remove');
+        const uploadDrop = document.querySelector('.upload-drop');
+        const defaultContent = cardUpload.innerHTML;
 
-      dropzone.on('addedfile', function (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          previewImage.src = e.target.result;
-          cardUpload.classList.add('selected');
+        dropzone.on('addedfile', function (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            previewImage.src = e.target.result;
+            cardUpload.classList.add('selected');
 
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(file);
-          hiddenFileInput.files = dataTransfer.files;
-        };
-        reader.readAsDataURL(file);
-      });
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            hiddenFileInput.files = dataTransfer.files;
+          };
+          reader.readAsDataURL(file);
+        });
 
-      removeButton.addEventListener('click', function () {
-        dropzone.removeAllFiles(true);
-        hiddenFileInput.value = '';
-        cardUpload.classList.remove('selected');
-      });
+        removeButton.addEventListener('click', function () {
+          dropzone.removeAllFiles(true);
+          hiddenFileInput.value = '';
+          cardUpload.classList.remove('selected');
+        });
 
-      dropzone.on("addedfile", function(file) {
-        if (dropzone.files.length > 1) {
-          dropzone.removeFile(dropzone.files[0]);
-        }
-      });
-    }
-  });
+        dropzone.on("addedfile", function(file) {
+          if (dropzone.files.length > 1) {
+            dropzone.removeFile(dropzone.files[0]);
+          }
+        });
+      }
+    });
+  }
 });
