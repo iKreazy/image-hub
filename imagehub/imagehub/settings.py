@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'main.apps.MainConfig',
     'accounts.apps.AccountsConfig',
     'images.apps.ImagesConfig'
 ]
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'imagehub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates', 'accounts/templates', 'images/templates'],
+        'DIRS': ['main/templates', 'accounts/templates', 'images/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,7 +121,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
+    BASE_DIR / 'main/static'
 ]
 
 # Default primary key field type
