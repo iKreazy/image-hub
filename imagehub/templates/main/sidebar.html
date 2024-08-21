@@ -1,0 +1,39 @@
+<div id="sidebar" class="sidebar offcanvas offcanvas-start show" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1">
+    <a class="btn sidebar-toggle nav-close d-sm-none" data-bs-toggle="offcanvas" href="#sidebar" role="button"
+       aria-controls="sidebar">
+        <i class="bi bi-x-circle"></i>
+    </a>
+    <div class="sign-btns d-flex d-sm-none gap-2 m-auto mt-3">
+        <a class="btn btn-primary" href="#">Sign In</a>
+        <a class="btn btn-secondary" href="#">Sign Up</a>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="sidebar-menu">
+            <li class="nav-item">
+                <a href="{% url 'index' %}" class="active">
+                    <i class="bi bi-house-fill"></i>
+                    <span class="nav-title">Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#">
+                    <i class="bi bi-clock-fill"></i>
+                    <span class="nav-title">Recents</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#">
+                    <i class="bi bi-bookmarks-fill"></i>
+                    <span class="nav-title">Categories</span>
+                </a>
+            </li>
+        </ul>
+        <div class="hr-line"></div>
+        <ul class="sidebar-menu sidebar-categories">
+            <!--li><a href="#"><span class="nav-title">Design</span></a></li>
+            <li><a href="#" class="active"><span class="nav-title">Art</span></a></li>
+            <li><a href="#"><span class="nav-title">Music</span></a></li>
+            <li><a href="#"><span class="nav-title">Pixel</span></a></li-->
+        </ul>
+    </div>
+</div>

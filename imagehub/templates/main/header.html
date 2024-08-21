@@ -1,0 +1,35 @@
+{% load static %}
+<div class="header">
+    <div class="container-fluid">
+        <div>
+            <a class="btn sidebar-toggle" data-bs-toggle="offcanvas" href="#sidebar" role="button"
+               aria-controls="sidebar">
+                <i class="bi bi-list"></i>
+            </a>
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'main/logotype.png' %}" alt="" width="32" height="32">
+            </a>
+        </div>
+        <form class="search-form">
+            <div class="search-group">
+                <input class="form-control" type="search" list="datalistOptions" id="exampleDataList"
+                       placeholder="Search">
+                <i class="bi bi-search"></i>
+            </div>
+            <datalist id="datalistOptions">
+                <!--option value="Москва">
+                <option value="Санкт-Петербург">
+                <option value="Брянск">
+                <option value="Екатеринбург">
+                <option value="Волгоград"-->
+            </datalist>
+            <button class="d-none" type="submit"></button>
+        </form>
+        <div>
+            <div class="sign-btns d-none d-sm-flex">
+                <a class="btn btn-primary" href="#">Sign In</a>
+                <a class="btn btn-secondary" href="#">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</div>
