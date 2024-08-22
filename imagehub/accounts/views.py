@@ -1,9 +1,10 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model, update_session_auth_hash
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.urls import reverse_lazy
 
-from .forms import LoginUserForm, RegisterUserForm
+from .forms import LoginUserForm, RegisterUserForm, SettingsUserForm
 
 
 class LoginUser(LoginView):
@@ -30,3 +31,37 @@ class RegisterUser(CreateView):
         response = super().form_valid(form)
         login(self.request, self.object, backend='django.contrib.auth.backends.ModelBackend')
         return response
+
+
+class UserSettings(LoginRequiredMixin, UpdateView):
+    model = get_user_model()
+    form_class = SettingsUserForm
+    template_name = 'accounts/settings.html'
+    extra_context = {'title': 'Settings'}
+
+    def get_success_url(self):
+        return reverse_lazy('settings')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+
+        if 'delete_avatar' in self.request.POST:
+            if user.avatar:
+                user.avatar.delete(save=False)
+                user.avatar = None
+        else:
+            if form.cleaned_data['avatar']:
+                if user.avatar:
+                    user.avatar.delete(save=False)
+                user.avatar = form.cleaned_data['avatar']
+
+        current_password = form.cleaned_data.get('current_password')
+        if current_password and user.check_password(current_password):
+            user.set_password(form.cleaned_data['password1'])
+            update_session_auth_hash(self.request, user)
+
+        user.save()
+        return super().form_valid(form)

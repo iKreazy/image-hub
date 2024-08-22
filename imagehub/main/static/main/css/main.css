@@ -816,6 +816,13 @@ ul.errorlist > li:nth-child(n+2) {
   flex-direction: column;
 }
 
+@media (max-width: 576px) {
+    .profile-edit .card-upload .upload-drop,
+    .item-upload .card-upload .upload-drop {
+        transform: scale(0.6);
+    }
+}
+
 .profile-edit .card-upload.selected .upload-drop,
 .item-upload .card-upload.selected .upload-drop {
   display: none;

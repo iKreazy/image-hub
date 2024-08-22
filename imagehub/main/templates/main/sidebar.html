@@ -7,7 +7,11 @@
     {% if user.is_authenticated %}
     <div class="nav-profile">
         <div class="avatar">
-            <img src="{% static 'main/img/no-avatar.svg' %}" class="object-fit-cover" alt="Username">
+            {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" class="object-fit-cover" alt="">
+            {% else %}
+            <img src="{% static 'main/img/no-avatar.svg' %}" class="object-fit-cover" alt="">
+            {% endif %}
         </div>
         <div class="fullname">{{ user.first_name }} {{ user.last_name }}</div>
         <div class="username">@{{ user.username }}</div>
