@@ -1,0 +1,25 @@
+<form method="post">
+    {% csrf_token %}
+
+    {% for i in form %}
+    <div class="mb-3">
+        <label class="form-label" for="{{ i.id_for_label }}">{{ i.label }}</label>
+        {{ i }}
+        {% if i.errors %}
+        <div class="alert alert-danger mt-2">{{ i.errors }}</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <div class="text-center mb-2">
+        <button type="submit" class="btn btn-primary px-5">Confirm</button>
+    </div>
+    <div class="text-center">
+        <span>Remember your password?</span>
+        <a href="{% url 'signin' %}" class="fw-medium text-decoration-none">Sign In</a>
+    </div>
+</form>

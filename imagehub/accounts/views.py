@@ -1,11 +1,13 @@
 from django.contrib.auth import login, get_user_model, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView
+from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetCompleteView
 from django.shortcuts import redirect
 from django.views.generic import CreateView, UpdateView
 from django.urls import reverse_lazy
 
-from .forms import LoginUserForm, RegisterUserForm, SettingsUserForm
+from .forms import LoginUserForm, RegisterUserForm, SettingsUserForm, RecoveryForm, RecoveryConfirmForm
 
 
 class LoginUser(LoginView):
@@ -42,6 +44,46 @@ class RegisterUser(CreateView):
         if request.user.is_authenticated:
             return redirect('index')
         return super().dispatch(request, *args, **kwargs)
+
+
+class RecoveryView(PasswordResetView):
+    form_class = RecoveryForm
+    template_name = 'accounts/recovery.html'
+    email_template_name = 'accounts/recovery_email.html'
+    extra_context = {'title': 'Recovery', 'template_name': 'accounts/recovery_form.html'}
+    success_url = reverse_lazy('recovery_done')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        self.request.session['recovery_in_progress'] = True
+        return response
+
+
+class RecoveryDoneView(PasswordResetDoneView):
+    template_name = 'accounts/recovery.html'
+    extra_context = {'title': 'Recovery', 'template_name': 'accounts/recovery_done.html'}
+
+    def dispatch(self, *args, **kwargs):
+        if not self.request.session.get('recovery_in_progress'):
+            return redirect('recovery')
+        return super().dispatch(*args, **kwargs)
+
+
+class RecoveryConfirmView(PasswordResetConfirmView):
+    form_class = RecoveryConfirmForm
+    template_name = 'accounts/recovery.html'
+    extra_context = {'title': 'Recovery', 'template_name': 'accounts/recovery_confirm.html'}
+    success_url = reverse_lazy('recovery_complete')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        del self.request.session['recovery_in_progress']
+        return response
+
+
+class RecoveryCompleteView(PasswordResetCompleteView):
+    template_name = 'accounts/recovery.html'
+    extra_context = {'title': 'Recovery', 'template_name': 'accounts/recovery_complete.html'}
 
 
 class UserSettings(LoginRequiredMixin, UpdateView):

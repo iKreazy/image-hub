@@ -1,7 +1,7 @@
 import re
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
 
 
 class LoginUserForm(AuthenticationForm):
@@ -72,6 +72,24 @@ class RegisterUserForm(UserCreationForm):
         if get_user_model().objects.filter(username__iexact=username).exists():
             raise forms.ValidationError("A user with this username already exists.")
         return username
+
+
+class RecoveryForm(PasswordResetForm):
+    email = forms.EmailField(
+        label='Email address',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'justin.walter@email.com'})
+    )
+
+
+class RecoveryConfirmForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        label='New password',
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '••••••••'})
+    )
+    new_password2 = forms.CharField(
+        label='Re-enter password',
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '••••••••'})
+    )
 
 
 class SettingsUserForm(forms.ModelForm):

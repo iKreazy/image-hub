@@ -125,6 +125,10 @@ ul.errorlist > li:nth-child(n+2) {
   border-radius: 1rem;
 }
 
+.alert {
+  font-size: .9rem;
+}
+
 .sidebar {
   max-width: 250px;
 }
