@@ -8,7 +8,7 @@ def get_avatar_uuid(instance, filename):
     return f'avatars/{uuid4().hex}.{ext}'
 
 
-class AccountModel(AbstractUser):
+class User(AbstractUser):
     avatar = models.ImageField(upload_to=get_avatar_uuid, blank=True, null=True, verbose_name='avatar')
 
     def __str__(self):

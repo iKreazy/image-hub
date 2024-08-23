@@ -134,7 +134,7 @@ AUTHENTICATION_BACKENDS = [
     'accounts.authentication.EmailAuthBackend'
 ]
 
-AUTH_USER_MODEL = 'accounts.AccountModel'
+AUTH_USER_MODEL = 'accounts.User'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

@@ -1,6 +1,7 @@
 from django.contrib.auth import login, get_user_model, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import redirect
 from django.views.generic import CreateView, UpdateView
 from django.urls import reverse_lazy
 
@@ -14,6 +15,11 @@ class LoginUser(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('index')
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('index')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class UserLogout(LogoutView):
@@ -32,12 +38,18 @@ class RegisterUser(CreateView):
         login(self.request, self.object, backend='django.contrib.auth.backends.ModelBackend')
         return response
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('index')
+        return super().dispatch(request, *args, **kwargs)
+
 
 class UserSettings(LoginRequiredMixin, UpdateView):
     model = get_user_model()
     form_class = SettingsUserForm
     template_name = 'accounts/settings.html'
     extra_context = {'title': 'Settings'}
+    login_url = reverse_lazy('signin')
 
     def get_success_url(self):
         return reverse_lazy('settings')
