@@ -54,6 +54,11 @@ class RecoveryView(PasswordResetView):
     success_url = reverse_lazy('recovery_done')
 
     def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        if not get_user_model().objects.filter(email=email).exists():
+            form.add_error('email', 'The user with the specified email is not registered')
+            return self.form_invalid(form)
+
         response = super().form_valid(form)
         self.request.session['recovery_in_progress'] = True
         return response
@@ -77,7 +82,8 @@ class RecoveryConfirmView(PasswordResetConfirmView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        del self.request.session['recovery_in_progress']
+        if 'recovery_in_progress' in self.request.session:
+            del self.request.session['recovery_in_progress']
         return response
 
 
