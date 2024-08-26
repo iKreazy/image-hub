@@ -25,6 +25,11 @@ jobs:
       working-directory: imagehub
       run: |
         python manage.py check
+    - name: Run migrations
+      working-directory: imagehub
+      run: |
+        python manage.py makemigrations
+        python manage.py migrate
     - name: Run Tests
       working-directory: imagehub
       run: |
