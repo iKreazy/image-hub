@@ -1,12 +1,28 @@
+{% load static %}
 <div id="sidebar" class="sidebar offcanvas offcanvas-start show" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1">
     <a class="btn sidebar-toggle nav-close d-sm-none" data-bs-toggle="offcanvas" href="#sidebar" role="button"
        aria-controls="sidebar">
         <i class="bi bi-x-circle"></i>
     </a>
-    <div class="sign-btns d-flex d-sm-none gap-2 m-auto mt-3">
-        <a class="btn btn-primary" href="#">Sign In</a>
-        <a class="btn btn-secondary" href="#">Sign Up</a>
+    {% if user.is_authenticated %}
+    <div class="nav-profile">
+        <div class="avatar">
+            {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" class="object-fit-cover" alt="">
+            {% else %}
+            <img src="{% static 'main/img/no-avatar.svg' %}" class="object-fit-cover" alt="">
+            {% endif %}
+        </div>
+        <div class="fullname">{{ user.first_name }} {{ user.last_name }}</div>
+        <div class="username">@{{ user.username }}</div>
+        <div class="posts">35 Posts</div>
     </div>
+    {% else %}
+    <div class="sign-btns d-flex d-sm-none gap-2 m-auto mt-3">
+        <a class="btn btn-primary" href="{% url 'signin' %}">Sign In</a>
+        <a class="btn btn-secondary" href="{% url 'signup' %}">Sign Up</a>
+    </div>
+    {% endif %}
     <div class="offcanvas-body">
         <ul class="sidebar-menu">
             <li class="nav-item">

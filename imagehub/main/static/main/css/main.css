@@ -52,6 +52,19 @@ body {
   font-family: var(--bs-body-font-family);
 }
 
+ul.errorlist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: .9rem;
+}
+
+ul.errorlist > li:nth-child(n+2) {
+  border-top: 1px solid var(--bs-alert-border-color);
+  padding-top: .5rem;
+  margin-top: .5rem;
+}
+
 .btn {
   border-radius: 80px;
 }
@@ -110,6 +123,10 @@ body {
 
 .card {
   border-radius: 1rem;
+}
+
+.alert {
+  font-size: .9rem;
 }
 
 .sidebar {
@@ -801,6 +818,13 @@ body {
 .item-upload .card-upload .upload-drop {
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 576px) {
+    .profile-edit .card-upload .upload-drop,
+    .item-upload .card-upload .upload-drop {
+        transform: scale(0.6);
+    }
 }
 
 .profile-edit .card-upload.selected .upload-drop,

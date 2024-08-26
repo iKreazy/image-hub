@@ -1,0 +1,90 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block contents %}
+<main class="main-content profile-edit">
+    <div class="container-fluid">
+        <div class="row align-items-center justify-content-center mt-3 mb-5">
+            <div class="col-md-10 col-lg-10 col-xl-8">
+                <div class="card">
+                    <form id="my-dropzone" novalidate method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card-body h-100 pe-lg-0 d-flex justify-content-center align-items-center">
+                                    <div class="card-upload dz-message" id="dropzone-container">
+                                        <input type="file" name="avatar" class="d-none" id="hidden-file-input">
+                                        {% if user.avatar %}
+                                        <img class="default-image" src="{{ user.avatar.url }}" alt="">
+                                        {% else %}
+                                        <img class="default-image" src="{% static 'main/img/no-avatar.svg' %}" alt="">
+                                        {% endif %}
+                                        <img class="upload-image" src="#" alt="">
+                                        <button type="button" class="upload-remove btn btn-outline-light"><i
+                                                class="bi bi-trash"></i></button>
+                                        <div class="upload-drop">
+                                            <i class="upload-icon bi bi-cloud-arrow-up"></i>
+                                            <span class="label">Drag and drop</span>
+                                            <button class="btn btn-secondary" type="button">Upload</button>
+                                            {% if user.avatar %}
+                                            <button type="submit" name="delete_avatar" class="btn btn-outline-danger"><i
+                                                class="bi bi-trash"></i></button>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card-body">
+
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <div>
+                                                <label class="form-label" for="{{ form.first_name.id_for_label }}">First name</label>
+                                                {{ form.first_name }}
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div>
+                                                <label class="form-label" for="{{ form.last_name.id_for_label }}">Last name</label>
+                                                {{ form.last_name }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if form.first_name.errors %}
+                                    <div class="alert alert-danger">{{ form.first_name.errors }}</div>
+                                    {% endif %}
+                                    {% if form.last_name.errors %}
+                                    <div class="alert alert-danger">{{ form.last_name.errors }}</div>
+                                    {% endif %}
+
+
+                                    {% for i in form %}
+                                        {% if i.name not in 'first_name last_name avatar' %}
+                                        {% if i.name == 'current_password' %}<hr>{% endif %}
+                                        <div class="mb-3">
+                                            <label class="form-label" for="{{ i.id_for_label }}">{{ i.label }}</label>
+                                            {{ i }}
+                                            {% if i.errors %}
+                                            <div class="alert alert-danger mt-2">{{ i.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                                    {% endif %}
+
+                                    <button class="btn btn-primary px-5" type="submit">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
