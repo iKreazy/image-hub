@@ -1,9 +1,12 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
+from django.utils import timezone
+from django.utils.timesince import timesince
 
 from uuid import uuid4
 from unidecode import unidecode
+from datetime import timedelta
 
 
 class Category(models.Model):
@@ -35,3 +38,19 @@ class Image(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.description[:30]}"
+
+    def format_uploaded_at(self):
+        return self._get_formatted_time(self.uploaded_at)
+
+    def format_updated_at(self):
+        return self._get_formatted_time(self.updated_at)
+
+    @staticmethod
+    def _get_formatted_time(dt):
+        if (timezone.now() - dt) < timedelta(days=1):
+            time_diff = timesince(dt).split(', ')[0].replace('\xa0', ' ')
+            if time_diff.startswith('0 minutes'):
+                return 'just now'
+            return time_diff + " ago"
+        else:
+            return dt.strftime("%d.%m.%Y %H:%M")

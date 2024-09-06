@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block contents %}
+<main class="main-content item-open items-board">
+    <div class="container-fluid">
+        <div class="row align-items-center justify-content-center mt-3 mb-5">
+            <div class="card-column-size col-md-7">
+                <article class="card">
+                    <img src="{{ image.file.url }}" class="card-image">
+                    <div class="card-body">
+                        <div class="card-head">
+                            <a class="card-author" href="#">
+                                <img src="{{ image.user.avatar.url }}" alt="">
+                                <div class="d-flex">
+                                    <span class="name">{{ image.user.first_name }} {{ image.user.last_name }}</span>
+                                    <span class="time">{{ image.format_updated_at }}</span>
+                                </div>
+                            </a>
+                            {% if image.user.id == user.id %}
+                            <div class="card-action">
+                                <button type="button" class="btn btn-secondary card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#"><i class="bi bi-pen-fill"></i>Edit</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="bi bi-trash-fill"></i>Delete</a></li>
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <p class="card-description">{{ image.description }}</p>
+                        <a class="card-category btn btn-sm btn-primary" href="#">{{ image.category.name }}</a>
+                    </div>
+                </article>
+            </div>
+            <div class="page-navigation">
+                <a href="#" class="btn btn-secondary page-prev"><i class="bi bi-arrow-left-short"></i></a>
+                <a href="#" class="btn btn-secondary page-next"><i class="bi bi-arrow-right-short"></i></a>
+            </div>
+        </div>
+        {% include template_name %}
+    </div>
+</main>
+{% endblock %}
