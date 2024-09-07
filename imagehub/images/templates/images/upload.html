@@ -13,17 +13,23 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="card-body h-100 pe-lg-0">
-                                    <div class="card-upload dz-message" id="dropzone-container">
-                                        <input type="file" name="file" class="d-none" id="hidden-file-input">
-                                        <img class="upload-image" src="#" alt="">
-                                        <button type="button" class="upload-remove btn btn-secondary"><i class="bi bi-trash"></i></button>
-                                        <div class="upload-drop">
-                                            <i class="upload-icon bi bi-cloud-arrow-up"></i>
-                                            <span class="label">Drag and drop</span>
-                                            <button class="btn btn-primary" type="button">Upload</button>
-                                            <div class="alert">PNG, JPEG are supported</div>
+                                    {% if is_edit %}
+                                        <div class="card-upload selected">
+                                            <img class="upload-image" src="{{ image.file.url }}" alt="">
                                         </div>
-                                    </div>
+                                    {% else %}
+                                        <div class="card-upload dz-message" id="dropzone-container">
+                                            <input type="file" name="file" class="d-none" id="hidden-file-input">
+                                            <img class="upload-image" src="#" alt="">
+                                            <button type="button" class="upload-remove btn btn-secondary"><i class="bi bi-trash"></i></button>
+                                            <div class="upload-drop">
+                                                <i class="upload-icon bi bi-cloud-arrow-up"></i>
+                                                <span class="label">Drag and drop</span>
+                                                <button class="btn btn-primary" type="button">Upload</button>
+                                                <div class="alert">PNG, JPEG are supported</div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-lg-6">

@@ -1,12 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, CreateView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils import timezone
+from django.views import View
+from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models.functions import Random
 
 from .models import Category, Image
-from .forms import ImageUploadForm
+from .forms import ImageUploadForm, ImageEditForm
 
 
 class IndexImageListView(ListView):
@@ -169,3 +171,42 @@ class DynamicImageDetailView(DetailView):
 
         context['account'] = self.switch_ == 'account'
         return context
+
+
+class ImageEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Image
+    form_class = ImageEditForm
+    template_name = 'images/upload.html'
+    success_url = reverse_lazy('image_list')
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Image, id=self.kwargs['image_id'], user__id=self.kwargs['user_id'])
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_edit'] = True
+        context['image'] = self.get_object()
+        return context
+
+    def get_success_url(self):
+        image = self.get_object()
+        return reverse_lazy('image_open', kwargs={
+            'object': image.user.username,
+            'user_id': image.user.id,
+            'image_id': image.id
+        })
+
+
+class ImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def test_func(self):
+        image = get_object_or_404(Image, id=self.kwargs['image_id'])
+        return self.request.user == image.user
+
+    def post(self, request, *args, **kwargs):
+        image = get_object_or_404(Image, id=self.kwargs['image_id'])
+        image.deleted_at = timezone.now()
+        image.save()
+        return redirect(reverse('image_board', kwargs={'object': image.user.username}))

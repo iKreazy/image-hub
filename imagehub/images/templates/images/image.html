@@ -22,13 +22,18 @@
                                 </div>
                             </a>
                             {% if image.user.id == user.id %}
-                            <div class="card-action">
-                                <button type="button" class="btn btn-secondary card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#"><i class="bi bi-pen-fill"></i>Edit</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="bi bi-trash-fill"></i>Delete</a></li>
-                                </ul>
-                            </div>
+                                <div class="card-action">
+                                    <button type="button" class="btn btn-secondary card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'image_edit' image.user.username image.user.id image.id %}"><i class="bi bi-pen-fill"></i>Edit</a></li>
+                                        <li>
+                                            <form method="post" action="{% url 'image_delete' image.user.username image.user.id image.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="dropdown-item"><i class="bi bi-trash-fill"></i>Delete</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
                             {% endif %}
                         </div>
                         <p class="card-description">{{ image.description }}</p>
