@@ -1,0 +1,77 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block contents %}
+<main class="main-content items-board{% if account %} profile-content{% endif %}">
+    <div class="container-fluid">
+        {% if account %}
+        <div class="row align-items-center justify-content-center mt-3 mb-5">
+            <div class="col-lg-6">
+                <div class="profile-info">
+                    <div class="avatar w-100">
+                        {% if account.avatar %}
+                        <img src="{{ account.avatar.url }}" class="object-fit-cover" alt="">
+                        {% else %}
+                        <img src="{% static 'main/img/no-avatar.svg' %}" class="object-fit-cover" alt="">
+                        {% endif %}
+                    </div>
+                    <div class="info">
+                        <div class="fullname">{{ account.first_name }} {{ account.last_name }}</div>
+                        <div class="username">@{{ account.username }}</div>
+                        <div class="posts">{{ image_count }} Posts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row" data-masonry='{"percentPosition": true }'>
+            {% for image in images %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+                {% if account %}
+                    <div class="card-item">
+                        <a class="card-pin" href="{% url 'image_open' image.user.username image.user.id image.id %}">
+                            <img src="{{ image.file.url }}" alt="">
+                            {% if image.description %}
+                            <span class="card-description">{{ image.description }}</span>
+                            {% endif %}
+                        </a>
+                        <a class="card-category" href="{% url 'image_board' image.category.slug %}">{{ image.category.name }}</a>
+                        <a class="card-date" href="{% url 'image_open' image.user.username image.user.id image.id %}">{{ image.format_updated_at }}</a>
+                        {% if image.user.id == user.id %}
+                            <div class="card-action dropdown">
+                                <button type="button" class="btn btn-outline-light card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+                                <ul class="dropdown-menu" style="">
+                                    <li><a class="dropdown-item" href="#"><i class="bi bi-pen-fill"></i>Edit</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="bi bi-trash-fill"></i>Delete</a></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="card-item">
+                        <a class="card-pin" href="{% url 'image_open' image.category.slug image.user.id image.id %}">
+                            <img src="{{ image.file.url }}" alt="">
+                            {% if image.description %}
+                            <span class="card-description">{{ image.description }}</span>
+                            {% endif %}
+                        </a>
+                        <a class="card-category" href="{% url 'image_board' image.category.slug %}">{{ image.category.name }}</a>
+                        <a class="card-author" href="{% url 'image_board' image.user.username %}">
+                            {% if image.user.avatar %}
+                            <img src="{{ image.user.avatar.url }}" alt="">
+                            {% else %}
+                            <img src="{% static 'main/img/no-avatar.svg' %}" alt="">
+                            {% endif %}
+                            <div class="d-flex">
+                                <span class="name">{{ image.user.first_name }} {{ image.user.last_name }}</span>
+                                <span class="time">{{ image.format_uploaded_at }}</span>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

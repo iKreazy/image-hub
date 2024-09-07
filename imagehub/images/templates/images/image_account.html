@@ -1,17 +1,19 @@
+{% load static %}
+
 {% if user_images %}
 <div class="title-posts">More images by {{ image.user.first_name }} {{ image.user.last_name }}</div>
 <div class="row" data-masonry='{"percentPosition": true }'>
     {% for item in user_images %}
     <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
         <div class="card-item">
-            <a class="card-pin" href="#">
+            <a class="card-pin" href="{% url 'image_open' item.user.username item.user.id item.id %}">
                 <img src="{{ item.file.url }}" alt="">
                 {% if item.description %}
                 <span class="card-description">{{ item.description }}</span>
                 {% endif %}
             </a>
-            <a class="card-category" href="#">{{ item.category.name }}</a>
-            <a class="card-date" href="#">{{ item.format_updated_at }}</a>
+            <a class="card-category" href="{% url 'image_board' item.category.slug %}">{{ item.category.name }}</a>
+            <a class="card-date" href="{% url 'image_open' item.user.username item.user.id item.id %}">{{ item.format_updated_at }}</a>
             {% if image.user.id == user.id %}
             <div class="card-action dropdown">
                 <button type="button" class="btn btn-outline-light card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>

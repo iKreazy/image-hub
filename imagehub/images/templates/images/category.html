@@ -8,7 +8,7 @@
             {% for category in categories %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
                 <div class="card-item">
-                    <a class="card-pin" href="#">
+                    <a class="card-pin" href="{% url 'image_board' category.slug %}">
                         {% if category.latest_image %}
                         <img src="{{ category.latest_image.file.url }}" class="object-fit-cover" alt="">
                         {% else %}

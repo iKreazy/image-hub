@@ -11,14 +11,16 @@ from datetime import timedelta
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
 
-    @property
-    def slug(self):
-        return slugify(unidecode(self.name))
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(unidecode(self.name))
+        super().save(*args, **kwargs)
 
 
 def get_images_uuid(instance, filename):
