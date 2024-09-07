@@ -94,8 +94,8 @@ class ImageUploadView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         image = self.object
-        return reverse_lazy('image_account', kwargs={
-            'username': image.user.username,
+        return reverse_lazy('image_open', kwargs={
+            'object': image.user.username,
             'user_id': image.user.id,
             'image_id': image.id
         })
@@ -148,24 +148,24 @@ class DynamicImageDetailView(DetailView):
 
         else:
             user_images = Image.objects.filter(
-                user_id=image.user_id,
+                user=image.user,
                 uploaded_at__gt=image.uploaded_at,
                 deleted_at__isnull=True
             ).order_by('-uploaded_at')[:10]
 
             if not user_images.exists():
                 user_images = Image.objects.filter(
-                    user_id=image.user_id,
+                    user=image.user,
                     deleted_at__isnull=True
                 ).exclude(id=image.id).order_by('-uploaded_at')[:10]
 
             context['user_images'] = user_images
 
-            account = Image.objects.filter(user_id=image.user, deleted_at__isnull=True)
+            account = Image.objects.filter(user=image.user, deleted_at__isnull=True)
             context['prev_image'] = account.filter(id__lt=image.id).order_by('-id').first()
             context['next_image'] = account.filter(id__gt=image.id).order_by('id').first()
 
-            context['template_name'] = 'images/image_category.html'
+            context['template_name'] = 'images/image_account.html'
 
         context['account'] = self.switch_ == 'account'
         return context
