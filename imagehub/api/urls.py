@@ -1,4 +1,5 @@
 from django.urls import path
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenBlacklistView
 
 from .images.views import *
 
@@ -12,4 +13,8 @@ urlpatterns = [
     path('account/id/<int:id>', AccountImageListAPIView.as_view()),
     path('image/id/<int:id>/', ImageDetailAPIView.as_view()),
     path('image/id/<int:id>/after', NextImagesAPIView.as_view()),
+
+    path('token', TokenObtainPairView.as_view()),
+    path('token/refresh', TokenRefreshView.as_view()),
+    path('token/logout', TokenBlacklistView.as_view()),
 ]
