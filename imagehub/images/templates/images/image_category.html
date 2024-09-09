@@ -1,0 +1,31 @@
+{% load static %}
+
+{% if next_images %}
+<div class="title-posts">More images in {{ image.category.name }}</div>
+<div class="row" data-masonry='{"percentPosition": true }'>
+    {% for item in next_images %}
+    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+        <div class="card-item">
+            <a class="card-pin" href="{% url 'image_open' item.category.slug item.user.id item.id %}">
+                <img src="{{ item.file.url }}" alt="">
+                {% if item.description %}
+                <span class="card-description">{{ item.description }}</span>
+                {% endif %}
+            </a>
+            <a class="card-category" href="{% url 'image_board' item.category.slug %}">{{ item.category.name }}</a>
+            <a class="card-author" href="{% url 'image_board' item.user.username %}">
+                {% if item.user.avatar %}
+                <img src="{{ item.user.avatar.url }}" alt="">
+                {% else %}
+                <img src="{% static 'main/img/no-avatar.svg' %}" alt="">
+                {% endif %}
+                <div class="d-flex">
+                    <span class="name">{{ item.user.first_name }} {{ item.user.last_name }}</span>
+                    <span class="time">{{ item.format_uploaded_at }}</span>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

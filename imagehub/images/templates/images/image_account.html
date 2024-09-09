@@ -1,0 +1,35 @@
+{% load static %}
+
+{% if user_images %}
+<div class="title-posts">More images by {{ image.user.first_name }} {{ image.user.last_name }}</div>
+<div class="row" data-masonry='{"percentPosition": true }'>
+    {% for item in user_images %}
+    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+        <div class="card-item">
+            <a class="card-pin" href="{% url 'image_open' item.user.username item.user.id item.id %}">
+                <img src="{{ item.file.url }}" alt="">
+                {% if item.description %}
+                <span class="card-description">{{ item.description }}</span>
+                {% endif %}
+            </a>
+            <a class="card-category" href="{% url 'image_board' item.category.slug %}">{{ item.category.name }}</a>
+            <a class="card-date" href="{% url 'image_open' item.user.username item.user.id item.id %}">{{ item.format_updated_at }}</a>
+            {% if image.user.id == user.id %}
+                <div class="card-action">
+                    <button type="button" class="btn btn-secondary card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'image_edit' item.user.username item.user.id item.id %}"><i class="bi bi-pen-fill"></i>Edit</a></li>
+                        <li>
+                            <form method="post" action="{% url 'image_delete' item.user.username item.user.id item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item"><i class="bi bi-trash-fill"></i>Delete</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

@@ -1,4 +1,5 @@
 {% load static %}
+{% load images_tags %}
 <div id="sidebar" class="sidebar offcanvas offcanvas-start show" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1">
     <a class="btn sidebar-toggle nav-close d-sm-none" data-bs-toggle="offcanvas" href="#sidebar" role="button"
        aria-controls="sidebar">
@@ -6,16 +7,20 @@
     </a>
     {% if user.is_authenticated %}
     <div class="nav-profile">
-        <div class="avatar">
+        <a class="avatar" href="{% url 'image_board' user.username %}">
             {% if user.avatar %}
             <img src="{{ user.avatar.url }}" class="object-fit-cover" alt="">
             {% else %}
             <img src="{% static 'main/img/no-avatar.svg' %}" class="object-fit-cover" alt="">
             {% endif %}
+        </a>
+        <div class="fullname">
+            <a href="{% url 'image_board' user.username %}">{{ user.first_name }} {{ user.last_name }}</a>
         </div>
-        <div class="fullname">{{ user.first_name }} {{ user.last_name }}</div>
-        <div class="username">@{{ user.username }}</div>
-        <div class="posts">35 Posts</div>
+        <div class="username">
+            <a href="{% url 'image_board' user.username %}">@{{ user.username }}</a>
+        </div>
+        <div class="posts">{% user_image_count user %} Posts</div>
     </div>
     {% else %}
     <div class="sign-btns d-flex d-sm-none gap-2 m-auto mt-3">
@@ -26,19 +31,19 @@
     <div class="offcanvas-body">
         <ul class="sidebar-menu">
             <li class="nav-item">
-                <a href="{% url 'index' %}" class="active">
+                <a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
                     <i class="bi bi-house-fill"></i>
                     <span class="nav-title">Home</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#">
+                <a href="{% url 'recents' %}" class="{% if request.resolver_match.url_name == 'recents' %}active{% endif %}">
                     <i class="bi bi-clock-fill"></i>
                     <span class="nav-title">Recents</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#">
+                <a href="{% url 'category' %}" class="{% if request.resolver_match.url_name == 'category' %}active{% endif %}">
                     <i class="bi bi-bookmarks-fill"></i>
                     <span class="nav-title">Categories</span>
                 </a>
@@ -46,10 +51,14 @@
         </ul>
         <div class="hr-line"></div>
         <ul class="sidebar-menu sidebar-categories">
-            <!--li><a href="#"><span class="nav-title">Design</span></a></li>
-            <li><a href="#" class="active"><span class="nav-title">Art</span></a></li>
-            <li><a href="#"><span class="nav-title">Music</span></a></li>
-            <li><a href="#"><span class="nav-title">Pixel</span></a></li-->
+            {% get_categories as category_items %}
+            {% for category in category_items.categories %}
+                <li class="nav-item">
+                    <a href="{% url 'image_board' category.slug %}" class="{% if category == category_items.current %}active{% endif %}">
+                        <span class="nav-title">{{ category.name }}</span>
+                    </a>
+                </li>
+            {% endfor %}
         </ul>
     </div>
 </div>

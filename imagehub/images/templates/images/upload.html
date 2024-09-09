@@ -1,0 +1,65 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block contents %}
+<main class="main-content item-upload">
+    <div class="container-fluid">
+        <div class="row align-items-center justify-content-center mt-3 mb-5">
+            <div class="col-md-10 col-lg-10 col-xl-8">
+                <div class="card">
+                    <form id="my-dropzone" novalidate method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card-body h-100 pe-lg-0">
+                                    {% if is_edit %}
+                                        <div class="card-upload selected">
+                                            <img class="upload-image" src="{{ image.file.url }}" alt="">
+                                        </div>
+                                    {% else %}
+                                        <div class="card-upload dz-message" id="dropzone-container">
+                                            <input type="file" name="file" class="d-none" id="hidden-file-input">
+                                            <img class="upload-image" src="#" alt="">
+                                            <button type="button" class="upload-remove btn btn-secondary"><i class="bi bi-trash"></i></button>
+                                            <div class="upload-drop">
+                                                <i class="upload-icon bi bi-cloud-arrow-up"></i>
+                                                <span class="label">Drag and drop</span>
+                                                <button class="btn btn-primary" type="button">Upload</button>
+                                                <div class="alert">PNG, JPEG are supported</div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        {{ form.category }}
+                                    </div>
+                                    {% if form.category.errors %}
+                                    <div class="alert alert-danger">{{ form.category.errors }}</div>
+                                    {% endif %}
+
+                                    <div class="mb-3">
+                                        <label class="form-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+                                        {{ form.description }}
+                                    </div>
+                                    {% if form.description.errors %}
+                                    <div class="alert alert-danger">{{ form.description.errors }}</div>
+                                    {% endif %}
+
+                                    {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                                    {% endif %}
+                                    <button class="btn btn-primary px-5" type="submit">Post it</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

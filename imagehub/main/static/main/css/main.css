@@ -172,8 +172,7 @@ ul.errorlist > li:nth-child(n+2) {
 }
 
 .sidebar .nav-profile .avatar {
-  display: flex;
-  justify-content: center;
+  display: inline-block;
   padding-top: 25px;
   padding-bottom: 15px;
 }
@@ -189,10 +188,15 @@ ul.errorlist > li:nth-child(n+2) {
   font-size: 1.2rem;
   letter-spacing: 0.02rem;
 }
+.sidebar .nav-profile .fullname a {
+  color: var(--bs-offcanvas-color);
+  text-decoration: none;
+}
 
-.sidebar .nav-profile .username {
+.sidebar .nav-profile .username a {
   font-size: .9rem;
   color: var(--bs-gray-600);
+  text-decoration: none;
 }
 
 .sidebar .nav-profile .posts {
@@ -475,7 +479,7 @@ ul.errorlist > li:nth-child(n+2) {
   text-decoration: none;
   transition: .1s linear;
   border-radius: 15px;
-  opacity: 0;
+  opacity: 1;
 }
 
 .items-board .card-item:hover .card-category {
@@ -909,12 +913,13 @@ ul.errorlist > li:nth-child(n+2) {
 
 .profile-content .profile-info .avatar {
   border-radius: 250px;
-  max-width: 150px;
+  max-width: 130px;
   overflow: hidden;
 }
 
 .profile-content .profile-info .avatar > img {
-  width: 100%;
+  width: 130px;
+  height: 130px;
 }
 
 .profile-content .profile-info .info {
