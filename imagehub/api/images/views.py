@@ -173,6 +173,7 @@ class UpdateImageView(generics.UpdateAPIView):
 
 
 class DeleteImageView(generics.GenericAPIView):
+    serializer_class = ImageSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):

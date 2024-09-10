@@ -11,6 +11,7 @@ from .serializers import AccountSerializer, SignUpSerializer, AccountSettingsSer
 
 class AccountInfoView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = AccountSerializer
 
     def get(self, request, *args, **kwargs):
         serializer = AccountSerializer(request.user, context={'request': request})
@@ -58,6 +59,7 @@ class AccountSettingsView(generics.RetrieveUpdateAPIView):
 
 class AccountDeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = AccountSerializer
 
     def delete(self, request, *args, **kwargs):
         user = request.user
