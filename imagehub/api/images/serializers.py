@@ -70,7 +70,6 @@ class ImageSerializer(serializers.ModelSerializer):
             if not data.get('category_id'):
                 raise serializers.ValidationError({'category_id': 'This field is required.'})
 
-        print('x', data)
         category_id = data.get('category_id')
         if category_id:
             data['category'] = get_object_or_404(Category, id=category_id)

@@ -5,7 +5,7 @@ from .accounts.views import *
 from .images.views import *
 
 urlpatterns = [
-    path('images/', RandomImageListAPIView.as_view()),
+    path('images', RandomImageListAPIView.as_view()),
     path('images/recents', RecentsImageListAPIView.as_view()),
 
     path('category/create', CreateCategoryView.as_view()),
