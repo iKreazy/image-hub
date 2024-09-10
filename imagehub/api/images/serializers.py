@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.db import IntegrityError
 from django.urls import reverse
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
@@ -6,7 +7,7 @@ from rest_framework.generics import get_object_or_404
 from images.models import Category, Image
 
 
-class CategorySelializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     open_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -16,6 +17,12 @@ class CategorySelializer(serializers.ModelSerializer):
     def get_open_url(self, obj):
         request = self.context.get('request')
         return request.build_absolute_uri(reverse('image_board', kwargs={'object': obj.slug}))
+
+    def create(self, data):
+        try:
+            return super().create(data)
+        except IntegrityError:
+            raise serializers.ValidationError({"slug": "Category with this slug already exists."})
 
 
 class ImageSerializer(serializers.ModelSerializer):

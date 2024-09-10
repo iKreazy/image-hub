@@ -1,6 +1,6 @@
 from rest_framework import generics, status
 from rest_framework.exceptions import NotFound
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.db.models.functions import Random
 from django.contrib.auth import get_user_model
@@ -8,13 +8,13 @@ from django.utils import timezone
 
 from images.models import Category, Image
 
-from .serializers import CategorySelializer, ImageSerializer
+from .serializers import CategorySerializer, ImageSerializer
 from .pagination import ImagePagination
 
 
 class CategoryListAPIView(generics.ListAPIView):
     queryset = Category.objects.all()
-    serializer_class = CategorySelializer
+    serializer_class = CategorySerializer
 
 
 class RandomImageListAPIView(generics.ListAPIView):
@@ -197,3 +197,50 @@ class DeleteImageView(generics.GenericAPIView):
         image.save()
 
         return Response({"detail": "Image marked as deleted."}, status=status.HTTP_200_OK)
+
+
+class CreateCategoryView(generics.CreateAPIView):
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateCategoryView(generics.UpdateAPIView):
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get_object(self):
+        try:
+            return Category.objects.get(pk=self.kwargs.get('id'))
+        except Category.DoesNotExist:
+            raise NotFound("Category not found")
+
+    def patch(self, request, *args, **kwargs):
+        category = self.get_object()
+        serializer = self.get_serializer(category, data=request.data, partial=True)
+        if serializer.is_valid():
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteCategoryView(generics.DestroyAPIView):
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get_object(self):
+        try:
+            return Category.objects.get(pk=self.kwargs.get('id'))
+        except Category.DoesNotExist:
+            raise NotFound("Category not found")
+
+    def delete(self, request, *args, **kwargs):
+        category = self.get_object()
+        category.delete()
+        return Response({"detail": "Category deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
