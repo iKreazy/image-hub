@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenBlacklistView
 
+from .accounts.views import *
 from .images.views import *
 
 urlpatterns = [
@@ -14,6 +15,10 @@ urlpatterns = [
     path('category/id/<int:id>/edit', UpdateCategoryView.as_view()),
     path('category/id/<int:id>/delete', DeleteCategoryView.as_view()),
 
+    path('account/signup', AccountSignUpView.as_view()),
+    path('account/info', AccountInfoView.as_view()),
+    path('account/settings', AccountSettingsView.as_view()),
+    path('account/delete', AccountDeleteView.as_view()),
     path('account/<slug:username>', AccountImageListAPIView.as_view()),
     path('account/id/<int:id>', AccountImageListAPIView.as_view()),
 
