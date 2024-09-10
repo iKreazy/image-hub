@@ -11,8 +11,12 @@ urlpatterns = [
     path('category/id/<int:id>', CategoryImageListAPIView.as_view()),
     path('account/<slug:username>', AccountImageListAPIView.as_view()),
     path('account/id/<int:id>', AccountImageListAPIView.as_view()),
+
+    path('image/upload', UploadImageView.as_view()),
     path('image/id/<int:id>/', ImageDetailAPIView.as_view()),
     path('image/id/<int:id>/after', NextImagesAPIView.as_view()),
+    path('image/id/<int:id>/edit', UpdateImageView.as_view()),
+    path('image/id/<int:id>/delete', DeleteImageView.as_view()),
 
     path('token', TokenObtainPairView.as_view()),
     path('token/refresh', TokenRefreshView.as_view()),

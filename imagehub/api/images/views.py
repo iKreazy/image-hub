@@ -1,7 +1,10 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.exceptions import NotFound
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from django.db.models.functions import Random
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 from images.models import Category, Image
 
@@ -123,3 +126,74 @@ class NextImagesAPIView(generics.ListAPIView):
         context = super().get_serializer_context()
         context['filter_by'] = self.request.query_params.get('filter_by', 'category')
         return context
+
+
+class UploadImageView(generics.CreateAPIView):
+    serializer_class = ImageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateImageView(generics.UpdateAPIView):
+    serializer_class = ImageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        try:
+            image = Image.objects.get(pk=self.kwargs.get('id'))
+        except Image.DoesNotExist:
+            raise NotFound("Image not found")
+
+        if image.deleted_at is not None:
+            raise NotFound("Image not found")
+
+        return image
+
+    def patch(self, request, *args, **kwargs):
+        image = self.get_object()
+        if image.user != request.user:
+            return Response({"detail": "You do not have permission to edit this image."},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        serializer = self.get_serializer(image, data=request.data, partial=True)
+        if serializer.is_valid():
+            self.perform_update(serializer)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteImageView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        try:
+            image = Image.objects.get(pk=self.kwargs.get('id'))
+        except Image.DoesNotExist:
+            raise NotFound("Image not found")
+
+        if image.deleted_at is not None:
+            raise NotFound("Image not found")
+
+        return image
+
+    def delete(self, request, *args, **kwargs):
+        image = self.get_object()
+
+        if image.user != request.user:
+            return Response({"detail": "You do not have permission to delete this image."},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        image.deleted_at = timezone.now()
+        image.save()
+
+        return Response({"detail": "Image marked as deleted."}, status=status.HTTP_200_OK)
