@@ -21,3 +21,11 @@ def get_categories(context):
 @register.simple_tag
 def user_image_count(user):
     return Image.objects.filter(user=user, deleted_at__isnull=True).count()
+
+
+@register.filter
+def truncate_words(value, max_words=32):
+    words = value.split()
+    if len(words) > max_words:
+        return ' '.join(words[:max_words]) + '...'
+    return value

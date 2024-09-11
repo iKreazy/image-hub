@@ -17,7 +17,7 @@ class IndexImageListView(ListView):
     context_object_name = 'images'
 
     def get_queryset(self):
-        return Image.objects.filter(deleted_at__isnull=True).order_by(Random())[:50]
+        return Image.objects.filter(deleted_at__isnull=True).order_by(Random())[:10]
 
 
 class RecentsImageListView(ListView):
@@ -42,7 +42,7 @@ class DynamicImageListView(ListView):
     def dispatch(self, request, *args, **kwargs):
         self.object_ = self.kwargs.get('object')
 
-        if Category.objects.filter(name__iexact=self.object_).exists():
+        if Category.objects.filter(slug__iexact=self.object_).exists():
             self.switch_ = 'category'
         else:
             self.switch_ = 'account'
@@ -52,10 +52,10 @@ class DynamicImageListView(ListView):
     def get_queryset(self):
         if self.switch_ == 'category':
             category = get_object_or_404(Category, slug=self.object_)
-            return Image.objects.filter(category=category, deleted_at__isnull=True).order_by('-uploaded_at')[:50]
+            return Image.objects.filter(category=category, deleted_at__isnull=True).order_by('-uploaded_at')[:10]
 
         user = get_object_or_404(get_user_model(), username=self.object_)
-        return Image.objects.filter(user=user, deleted_at__isnull=True).order_by('-uploaded_at')
+        return Image.objects.filter(user=user, deleted_at__isnull=True).order_by('-uploaded_at')[:10]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -113,7 +113,7 @@ class DynamicImageDetailView(DetailView):
         self.switch_ = None
 
     def dispatch(self, request, *args, **kwargs):
-        if Category.objects.filter(name__iexact=self.kwargs.get('object')).exists():
+        if Category.objects.filter(slug__iexact=self.kwargs.get('object')).exists():
             self.switch_ = 'category'
         else:
             self.switch_ = 'account'

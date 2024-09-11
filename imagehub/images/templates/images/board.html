@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load images_tags %}
 
 {% block contents %}
 <main class="main-content items-board{% if account %} profile-content{% endif %}">
@@ -36,7 +37,7 @@
                     <a class="card-pin" href="{{ image_url }}">
                         <img src="{{ image.file.url }}" alt="">
                         {% if image.description %}
-                        <span class="card-description">{{ image.description }}</span>
+                        <span class="card-description">{{ image.description|truncate_words:32 }}</span>
                         {% endif %}
                     </a>
                     <a class="card-category" href="{% url 'image_board' image.category.slug %}">{{ image.category.name }}</a>

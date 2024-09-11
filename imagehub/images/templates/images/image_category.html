@@ -1,4 +1,5 @@
 {% load static %}
+{% load images_tags %}
 
 {% if next_images %}
 <div class="title-posts">More images in {{ image.category.name }}</div>
@@ -9,7 +10,7 @@
             <a class="card-pin" href="{% url 'image_open' item.category.slug item.user.id item.id %}">
                 <img src="{{ item.file.url }}" alt="">
                 {% if item.description %}
-                <span class="card-description">{{ item.description }}</span>
+                <span class="card-description">{{ image.description|truncate_words:32 }}</span>
                 {% endif %}
             </a>
             <a class="card-category" href="{% url 'image_board' item.category.slug %}">{{ item.category.name }}</a>
