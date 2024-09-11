@@ -1,13 +1,14 @@
 from rest_framework import generics, status
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.db.models.functions import Random
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.template.loader import render_to_string
-from django.http import HttpResponse
+from django.http import JsonResponse
 from drf_spectacular.utils import extend_schema
+from urllib.parse import unquote
 
 from images.models import Category, Image
 
@@ -26,13 +27,37 @@ class RandomImageListAPIView(generics.ListAPIView):
     permission_classes = []
 
     def get(self, request, *args, **kwargs):
-        queryset = Image.objects.filter(deleted_at__isnull=True).order_by(Random())[:10]
+        exclude = unquote(request.query_params.get('exclude', ''))
+        if exclude:
+            try:
+                exclude = [int(_) for _ in exclude.split(',') if _.isdigit()]
+            except ValueError:
+                raise ValidationError("Invalid values in exclude parameter. Integers expected.")
+        else:
+            exclude = []
+
+        # queryset = Image.objects.filter(deleted_at__isnull=True).exclude(id__in=exclude if exclude else []).order_by(Random())[:10]
+        total_count = Image.objects.filter(deleted_at__isnull=True).exclude(id__in=exclude).count()
+        if total_count <= 10:
+            queryset = Image.objects.filter(deleted_at__isnull=True).exclude(id__in=exclude)
+        else:
+            selected_images = list()
+            while len(selected_images) < 10:
+                random_images = Image.objects.filter(deleted_at__isnull=True).exclude(
+                    id__in=exclude + [_.id for _ in selected_images]).order_by(Random())[:10]
+
+                if random_images:
+                    for image in random_images:
+                        if image.id not in exclude:
+                            selected_images.append(image)
+
+            queryset = list(selected_images)
 
         if request.query_params.get('html'):
             rendered_images = [
                 render_to_string('images/image_item.html', {'image': image}) for image in queryset
             ]
-            return HttpResponse(''.join(rendered_images))
+            return JsonResponse(rendered_images, safe=False)
 
         serializer = self.serializer_class(queryset, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)

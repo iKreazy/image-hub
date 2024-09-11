@@ -25,7 +25,7 @@
             </div>
         </div>
         {% endif %}
-        <div class="row" data-masonry='{"percentPosition": true }'>
+        <div class="row masonry-container" data-masonry='{"percentPosition": true }'>
             {% for image in images %}
                 {% include 'images/image_item.html' %}
             {% endfor %}

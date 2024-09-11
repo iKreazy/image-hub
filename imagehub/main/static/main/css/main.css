@@ -52,6 +52,11 @@ body {
   font-family: var(--bs-body-font-family);
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 ul.errorlist {
   list-style: none;
   padding: 0;
@@ -582,6 +587,24 @@ ul.errorlist > li:nth-child(n+2) {
   margin: auto;
   margin-top: 1.5rem;
   border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+}
+
+.items-board .loading-spinner {
+  text-align: center;
+  max-width: 768px;
+  margin: auto;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+}
+
+.items-board .loading-spinner > i {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  margin: auto;
+  animation: spin 1s linear infinite;
+  align-items: center;
+  justify-content: center;
 }
 
 .items-board .title-posts {
