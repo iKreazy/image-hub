@@ -13,23 +13,23 @@ urlpatterns = [
     path('images/account/<slug:username>', AccountImageListAPIView.as_view()),
     path('images/account/id/<int:id>', AccountImageListAPIView.as_view()),
 
-    path('category/create', CreateCategoryView.as_view()),
+    path('category/create', CreateCategoryView.as_view(), name='api-category-create'),
     path('category/list', CategoryListAPIView.as_view()),
     path('category/id/<int:id>/edit', UpdateCategoryView.as_view()),
     path('category/id/<int:id>/delete', DeleteCategoryView.as_view()),
 
-    path('account/signup', AccountSignUpView.as_view()),
+    path('account/signup', AccountSignUpView.as_view(), name='api-account-signup'),
     path('account/info', AccountInfoView.as_view()),
-    path('account/settings', AccountSettingsView.as_view()),
+    path('account/settings', AccountSettingsView.as_view(), name='api-account-settings'),
     path('account/delete', AccountDeleteView.as_view()),
 
-    path('image/upload', UploadImageView.as_view()),
+    path('image/upload', UploadImageView.as_view(), name='api-image-upload'),
     path('image/id/<int:id>', ImageDetailAPIView.as_view()),
     path('image/id/<int:id>/after', NextImagesAPIView.as_view()),
     path('image/id/<int:id>/edit', UpdateImageView.as_view()),
     path('image/id/<int:id>/delete', DeleteImageView.as_view()),
 
-    path('token', TokenObtainPairView.as_view()),
+    path('token', TokenObtainPairView.as_view(), name='api-token'),
     path('token/refresh', TokenRefreshView.as_view()),
     path('token/logout', TokenBlacklistView.as_view()),
 
