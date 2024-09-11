@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from django.db.models.functions import Random
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.template.loader import render_to_string
+from django.http import HttpResponse
 from drf_spectacular.utils import extend_schema
 
 from images.models import Category, Image
@@ -20,16 +22,39 @@ class CategoryListAPIView(generics.ListAPIView):
 
 
 class RandomImageListAPIView(generics.ListAPIView):
-    queryset = Image.objects.filter(deleted_at__isnull=True).order_by(Random())[:25]
     serializer_class = ImageSerializer
     permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        queryset = Image.objects.filter(deleted_at__isnull=True).order_by(Random())[:10]
+
+        if request.query_params.get('html'):
+            rendered_images = [
+                render_to_string('images/image_item.html', {'image': image}) for image in queryset
+            ]
+            return HttpResponse(''.join(rendered_images))
+
+        serializer = self.serializer_class(queryset, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class RecentsImageListAPIView(generics.ListAPIView):
-    queryset = Image.objects.filter(deleted_at__isnull=True).order_by('-uploaded_at')
     serializer_class = ImageSerializer
     permission_classes = []
     pagination_class = ImagePagination
+
+    def get(self, request, *args, **kwargs):
+        queryset = Image.objects.filter(deleted_at__isnull=True).order_by('-uploaded_at')
+        page = self.paginate_queryset(queryset)
+
+        if request.query_params.get('html'):
+            rendered_images = [
+                render_to_string('images/image_item.html', {'image': image}) for image in page
+            ]
+            return self.get_paginated_response(rendered_images)
+
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
 class CategoryImageListAPIView(generics.ListAPIView):
@@ -51,6 +76,18 @@ class CategoryImageListAPIView(generics.ListAPIView):
         if category:
             return Image.objects.filter(category=category, deleted_at__isnull=True).order_by('-uploaded_at')
         return Image.objects.none()
+
+    def get(self, request, *args, **kwargs):
+        page = self.paginate_queryset(self.get_queryset())
+
+        if request.query_params.get('html'):
+            rendered_images = [
+                render_to_string('images/image_item.html', {'image': image}) for image in page
+            ]
+            return self.get_paginated_response(rendered_images)
+
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
 class AccountImageListAPIView(generics.ListAPIView):
@@ -77,6 +114,21 @@ class AccountImageListAPIView(generics.ListAPIView):
         context = super().get_serializer_context()
         context['filter_by'] = 'account'
         return context
+
+    def get(self, request, *args, **kwargs):
+        page = self.paginate_queryset(self.get_queryset())
+
+        if request.query_params.get('html'):
+            rendered_images = [
+                render_to_string('images/image_item.html', {
+                    'image': image,
+                    'account': True
+                }) for image in page
+            ]
+            return self.get_paginated_response(rendered_images)
+
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
 class ImageDetailAPIView(generics.RetrieveAPIView):
@@ -134,6 +186,22 @@ class NextImagesAPIView(generics.ListAPIView):
         context = super().get_serializer_context()
         context['filter_by'] = self.request.query_params.get('filter_by', 'category')
         return context
+
+    def get(self, request, *args, **kwargs):
+        page = self.paginate_queryset(self.get_queryset())
+        filter_by = self.request.query_params.get('filter_by', 'category')
+
+        if request.query_params.get('html'):
+            rendered_images = [
+                render_to_string('images/image_item.html', {
+                    'image': image,
+                    'account': True if filter_by == 'account' else False
+                }) for image in page
+            ]
+            return self.get_paginated_response(rendered_images)
+
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
 class UploadImageView(generics.CreateAPIView):
