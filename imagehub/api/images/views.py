@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from django.db.models.functions import Random
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from drf_spectacular.utils import extend_schema
 
 from images.models import Category, Image
 
@@ -15,21 +16,25 @@ from .pagination import ImagePagination
 class CategoryListAPIView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = []
 
 
 class RandomImageListAPIView(generics.ListAPIView):
     queryset = Image.objects.filter(deleted_at__isnull=True).order_by(Random())[:25]
     serializer_class = ImageSerializer
+    permission_classes = []
 
 
 class RecentsImageListAPIView(generics.ListAPIView):
     queryset = Image.objects.filter(deleted_at__isnull=True).order_by('-uploaded_at')
     serializer_class = ImageSerializer
+    permission_classes = []
     pagination_class = ImagePagination
 
 
 class CategoryImageListAPIView(generics.ListAPIView):
     serializer_class = ImageSerializer
+    permission_classes = []
     pagination_class = ImagePagination
 
     def get_queryset(self):
@@ -50,6 +55,7 @@ class CategoryImageListAPIView(generics.ListAPIView):
 
 class AccountImageListAPIView(generics.ListAPIView):
     serializer_class = ImageSerializer
+    permission_classes = []
     pagination_class = ImagePagination
 
     def get_queryset(self):
@@ -76,6 +82,7 @@ class AccountImageListAPIView(generics.ListAPIView):
 class ImageDetailAPIView(generics.RetrieveAPIView):
     queryset = Image.objects.filter(deleted_at__isnull=True)
     serializer_class = ImageSerializer
+    permission_classes = []
     lookup_field = 'id'
 
     def get_object(self):
@@ -87,6 +94,7 @@ class ImageDetailAPIView(generics.RetrieveAPIView):
 
 class NextImagesAPIView(generics.ListAPIView):
     serializer_class = ImageSerializer
+    permission_classes = []
     pagination_class = ImagePagination
 
     def get_queryset(self):
@@ -159,6 +167,10 @@ class UpdateImageView(generics.UpdateAPIView):
 
         return image
 
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return Response({"detail": "Method 'PUT' not allowed."}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
     def patch(self, request, *args, **kwargs):
         image = self.get_object()
         if image.user != request.user:
@@ -221,6 +233,10 @@ class UpdateCategoryView(generics.UpdateAPIView):
             return Category.objects.get(pk=self.kwargs.get('id'))
         except Category.DoesNotExist:
             raise NotFound("Category not found")
+
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return Response({"detail": "Method 'PUT' not allowed."}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def patch(self, request, *args, **kwargs):
         category = self.get_object()

@@ -8,11 +8,13 @@ from .images.views import *
 urlpatterns = [
     path('images', RandomImageListAPIView.as_view()),
     path('images/recents', RecentsImageListAPIView.as_view()),
+    path('images/category/<slug:slug>', CategoryImageListAPIView.as_view()),
+    path('images/category/id/<int:id>', CategoryImageListAPIView.as_view()),
+    path('images/account/<slug:username>', AccountImageListAPIView.as_view()),
+    path('images/account/id/<int:id>', AccountImageListAPIView.as_view()),
 
     path('category/create', CreateCategoryView.as_view()),
     path('category/list', CategoryListAPIView.as_view()),
-    path('category/<slug:slug>', CategoryImageListAPIView.as_view()),
-    path('category/id/<int:id>', CategoryImageListAPIView.as_view()),
     path('category/id/<int:id>/edit', UpdateCategoryView.as_view()),
     path('category/id/<int:id>/delete', DeleteCategoryView.as_view()),
 
@@ -20,8 +22,6 @@ urlpatterns = [
     path('account/info', AccountInfoView.as_view()),
     path('account/settings', AccountSettingsView.as_view()),
     path('account/delete', AccountDeleteView.as_view()),
-    path('account/<slug:username>', AccountImageListAPIView.as_view()),
-    path('account/id/<int:id>', AccountImageListAPIView.as_view()),
 
     path('image/upload', UploadImageView.as_view()),
     path('image/id/<int:id>', ImageDetailAPIView.as_view()),
@@ -34,5 +34,5 @@ urlpatterns = [
     path('token/logout', TokenBlacklistView.as_view()),
 
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 ]

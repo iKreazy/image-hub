@@ -28,7 +28,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
-    file = serializers.ImageField()
+    file = serializers.ImageField(write_only=True)
     file_url = serializers.SerializerMethodField()
     open_url = serializers.SerializerMethodField()
     category_id = serializers.IntegerField()

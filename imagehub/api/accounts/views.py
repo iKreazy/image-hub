@@ -5,6 +5,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 from .serializers import AccountSerializer, SignUpSerializer, AccountSettingsSerializer
 
@@ -18,9 +19,14 @@ class AccountInfoView(APIView):
         return Response(serializer.data)
 
 
+@extend_schema(
+    request=SignUpSerializer,
+    responses=AccountSerializer,
+    methods=['POST']
+)
 class AccountSignUpView(generics.CreateAPIView):
     queryset = get_user_model().objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = []
     serializer_class = SignUpSerializer
 
     def create(self, request, *args, **kwargs):
@@ -29,6 +35,11 @@ class AccountSignUpView(generics.CreateAPIView):
         return Response(AccountSerializer(user, context={'request': request}).data, status=status.HTTP_201_CREATED)
 
 
+@extend_schema(
+    request=AccountSettingsSerializer,
+    responses=AccountSerializer,
+    methods=['PATCH']
+)
 class AccountSettingsView(generics.RetrieveUpdateAPIView):
     serializer_class = AccountSettingsSerializer
     permission_classes = [IsAuthenticated]
@@ -36,8 +47,13 @@ class AccountSettingsView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
+    @extend_schema(exclude=True)
     def get(self, request, *args, **kwargs):
         return Response({"detail": "Method 'GET' not allowed."}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return Response({"detail": "Method 'PUT' not allowed."}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def patch(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', True)

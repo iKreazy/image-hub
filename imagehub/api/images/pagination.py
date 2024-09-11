@@ -13,3 +13,16 @@ class ImagePagination(PageNumberPagination):
             'count': self.page.paginator.count,
             'results': data
         })
+
+    def get_paginated_response_schema(self, schema):
+        return {
+            'type': 'object',
+            'required': ['count', 'results'],
+            'properties': {
+                'count': {
+                    'type': 'integer',
+                    'example': 123,
+                },
+                'results': schema,
+            },
+        }
