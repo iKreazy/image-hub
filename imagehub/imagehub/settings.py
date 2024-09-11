@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'accounts.apps.AccountsConfig',
     'images.apps.ImagesConfig',
-    'api.apps.ApiConfig'
+    'api.apps.ApiConfig',
+    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
@@ -144,4 +146,13 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'ImageHub API ',
+    'DESCRIPTION': 'ImageHub API allows you to manage and interact with images and categories. It provides endpoints for uploading, retrieving, and updating images, managing categories, and handling user accounts.',
+    'VERSION': '1.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': '/api/v1/',
+    'COMPONENT_SPLIT_REQUEST': True
 }

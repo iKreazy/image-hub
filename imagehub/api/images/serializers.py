@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.urls import reverse
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
+from drf_spectacular.utils import extend_schema_field
 
 from images.models import Category, Image
 
@@ -14,6 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'open_url', 'name', 'slug']
 
+    @extend_schema_field(serializers.CharField())
     def get_open_url(self, obj):
         request = self.context.get('request')
         return request.build_absolute_uri(reverse('image_board', kwargs={'object': obj.slug}))
@@ -26,7 +28,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
-    file = serializers.ImageField()
+    file = serializers.ImageField(write_only=True)
     file_url = serializers.SerializerMethodField()
     open_url = serializers.SerializerMethodField()
     category_id = serializers.IntegerField()
@@ -38,10 +40,12 @@ class ImageSerializer(serializers.ModelSerializer):
             'category_id', 'user_id', 'uploaded_at', 'updated_at']
         read_only_fields = ['user', 'uploaded_at', 'updated_at', 'deleted_at']
 
+    @extend_schema_field(serializers.CharField())
     def get_file_url(self, obj):
         request = self.context.get('request')
         return request.build_absolute_uri(settings.MEDIA_URL + str(obj.file))
 
+    @extend_schema_field(serializers.CharField())
     def get_open_url(self, obj):
         request = self.context.get('request')
         filter_by = self.context.get('filter_by', 'category')

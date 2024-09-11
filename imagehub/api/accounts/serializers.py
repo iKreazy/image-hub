@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.conf import settings
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from drf_spectacular.utils import extend_schema_field
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -14,10 +15,12 @@ class AccountSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ['id', 'open_url', 'avatar_url', 'email', 'username', 'first_name', 'last_name']
 
+    @extend_schema_field(serializers.CharField())
     def get_open_url(self, obj):
         request = self.context.get('request')
         return request.build_absolute_uri(reverse('image_board', kwargs={'object': obj.username}))
 
+    @extend_schema_field(serializers.CharField())
     def get_avatar_url(self, obj):
         if not obj.avatar:
             return None
