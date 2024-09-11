@@ -1,0 +1,48 @@
+{% load static %}
+{% load images_tags %}
+
+<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+    {% if account %}
+        {% url 'image_open' image.user.username image.user.id image.id as image_url %}
+    {% else %}
+        {% url 'image_open' image.category.slug image.user.id image.id as image_url %}
+    {% endif %}
+    <div class="card-item">
+        <a class="card-pin" href="{{ image_url }}">
+            <img src="{{ image.file.url }}" alt="">
+            {% if image.description %}
+            <span class="card-description">{{ image.description|truncate_words:32 }}</span>
+            {% endif %}
+        </a>
+        <a class="card-category" href="{% url 'image_board' image.category.slug %}">{{ image.category.name }}</a>
+        {% if account %}
+            <a class="card-date" href="{{ image_url }}">{{ image.format_updated_at }}</a>
+        {% else %}
+            <a class="card-author" href="{% url 'image_board' image.user.username %}">
+                {% if image.user.avatar %}
+                <img src="{{ image.user.avatar.url }}" alt="">
+                {% else %}
+                <img src="{% static 'main/img/no-avatar.svg' %}" alt="">
+                {% endif %}
+                <div class="d-flex">
+                    <span class="name">{{ image.user.first_name }} {{ image.user.last_name }}</span>
+                    <span class="time">{{ image.format_uploaded_at }}</span>
+                </div>
+            </a>
+        {% endif %}
+        {% if image.user.id == user.id %}
+            <div class="card-action">
+                <button type="button" class="btn btn-secondary card-edit" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots"></i></button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'image_edit' image.user.username image.user.id image.id %}"><i class="bi bi-pen-fill"></i>Edit</a></li>
+                    <li>
+                        <form method="post" action="{% url 'image_delete' image.user.username image.user.id image.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item"><i class="bi bi-trash-fill"></i>Delete</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</div>

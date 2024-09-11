@@ -1,15 +1,16 @@
 {% load static %}
+{% load images_tags %}
 
 {% if user_images %}
 <div class="title-posts">More images by {{ image.user.first_name }} {{ image.user.last_name }}</div>
-<div class="row" data-masonry='{"percentPosition": true }'>
+<div class="row masonry-container" data-masonry='{"percentPosition": true }'>
     {% for item in user_images %}
     <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
         <div class="card-item">
             <a class="card-pin" href="{% url 'image_open' item.user.username item.user.id item.id %}">
                 <img src="{{ item.file.url }}" alt="">
                 {% if item.description %}
-                <span class="card-description">{{ item.description }}</span>
+                <span class="card-description">{{ image.description|truncate_words:32 }}</span>
                 {% endif %}
             </a>
             <a class="card-category" href="{% url 'image_board' item.category.slug %}">{{ item.category.name }}</a>

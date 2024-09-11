@@ -6,13 +6,28 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Image-HUB {% block title %}{% endblock %}</title>
+    <title>ImageHub{% if title %} – {{ title }}{% endif %}</title>
     <link rel="icon" type="image/png" href="{% static 'main/img/favicon.png' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"/>
     <link href="{% static 'main/css/fonts.css' %}" rel="stylesheet">
     <link href="{% static 'main/css/main.css' %}" rel="stylesheet">
+    <script>
+        window.pageData = {
+            key: "{{ page_key }}",
+            categoryId: {% if page_key == 'category' %}{{ category.id }}{% else %}null{% endif %},
+            categorySlug: "{% if page_key == 'category' %}{{ category.slug }}{% else %}null{% endif %}",
+            userId: {% if page_key == 'account' %}{{ account.id }}{% else %}null{% endif %},
+            username: "{% if page_key == 'account' %}{{ account.username }}{% else %}null{% endif %}",
+            imageId: {% if image %}{{ image.id }}{% else %}null{% endif %}
+        };
+        {% if images %}window.pageData.images = [{% for image in images %}{{ image.id }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+        {% elif next_images %}window.pageData.images = [{% for image in next_images %}{{ image.id }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+        {% elif user_images %}window.pageData.images = [{% for image in user_images %}{{ image.id }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+        {% else %}window.pageData.images = [];
+        {% endif %}
+    </script>
 </head>
 <body>
     {% include 'main/sidebar.html' %}
@@ -24,5 +39,6 @@
     <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" async></script>
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <script src="{% static 'main/js/main.js' %}"></script>
+    <script src="{% static 'main/js/api-scroll.js' %}"></script>
 </body>
 </html>

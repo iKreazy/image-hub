@@ -17,7 +17,12 @@ class IndexImageListView(ListView):
     context_object_name = 'images'
 
     def get_queryset(self):
-        return Image.objects.filter(deleted_at__isnull=True).order_by(Random())[:50]
+        return Image.objects.filter(deleted_at__isnull=True).order_by(Random())[:10]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_key'] = 'index'
+        return context
 
 
 class RecentsImageListView(ListView):
@@ -27,6 +32,12 @@ class RecentsImageListView(ListView):
 
     def get_queryset(self):
         return Image.objects.filter(deleted_at__isnull=True).order_by('-uploaded_at')[:10]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_key'] = 'recents'
+        context['title'] = 'Recents'
+        return context
 
 
 class DynamicImageListView(ListView):
@@ -42,7 +53,7 @@ class DynamicImageListView(ListView):
     def dispatch(self, request, *args, **kwargs):
         self.object_ = self.kwargs.get('object')
 
-        if Category.objects.filter(name__iexact=self.object_).exists():
+        if Category.objects.filter(slug__iexact=self.object_).exists():
             self.switch_ = 'category'
         else:
             self.switch_ = 'account'
@@ -52,19 +63,28 @@ class DynamicImageListView(ListView):
     def get_queryset(self):
         if self.switch_ == 'category':
             category = get_object_or_404(Category, slug=self.object_)
-            return Image.objects.filter(category=category, deleted_at__isnull=True).order_by('-uploaded_at')[:50]
+            return Image.objects.filter(category=category, deleted_at__isnull=True).order_by('-uploaded_at')[:10]
 
         user = get_object_or_404(get_user_model(), username=self.object_)
-        return Image.objects.filter(user=user, deleted_at__isnull=True).order_by('-uploaded_at')
+        return Image.objects.filter(user=user, deleted_at__isnull=True).order_by('-uploaded_at')[:10]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['page_key'] = self.switch_
+
         if self.switch_ == 'category':
+            context['category'] = get_object_or_404(Category, slug=self.object_)
             context['images'] = self.get_queryset()
+            context['title'] = context['category'].name
             return context
 
         context['account'] = get_object_or_404(get_user_model(), username=self.object_)
         context['image_count'] = Image.objects.filter(user=context['account'], deleted_at__isnull=True).count()
+        context['title'] = ' '.join([
+            context['account'].first_name,
+            context['account'].last_name,
+            f"(@{context['account'].username})"
+        ])
         return context
 
 
@@ -84,6 +104,11 @@ class CategoryListView(ListView):
             ).count()
         return categories
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Categories'
+        return context
+
 
 class ImageUploadView(LoginRequiredMixin, CreateView):
     model = Image
@@ -102,6 +127,11 @@ class ImageUploadView(LoginRequiredMixin, CreateView):
             'image_id': image.id
         })
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Upload'
+        return context
+
 
 class DynamicImageDetailView(DetailView):
     model = Image
@@ -113,7 +143,7 @@ class DynamicImageDetailView(DetailView):
         self.switch_ = None
 
     def dispatch(self, request, *args, **kwargs):
-        if Category.objects.filter(name__iexact=self.kwargs.get('object')).exists():
+        if Category.objects.filter(slug__iexact=self.kwargs.get('object')).exists():
             self.switch_ = 'category'
         else:
             self.switch_ = 'account'
@@ -169,7 +199,19 @@ class DynamicImageDetailView(DetailView):
 
             context['template_name'] = 'images/image_account.html'
 
-        context['account'] = self.switch_ == 'account'
+        if image.description:
+            split = image.description.split()
+            context['title'] = ' '.join([*split[:3]]) + '...' if len(split) > 3 else str()
+        else:
+            context['title'] = ' '.join([
+                image.user.first_name,
+                image.user.last_name,
+                f"(@{image.user.username})"
+            ])
+
+        context['page_key'] = self.switch_
+        context['category'] = image.category
+        context['account'] = image.user if self.switch_ == 'account' else False
         return context
 
 
@@ -189,6 +231,7 @@ class ImageEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['is_edit'] = True
         context['image'] = self.get_object()
+        context['title'] = 'Edit'
         return context
 
     def get_success_url(self):
