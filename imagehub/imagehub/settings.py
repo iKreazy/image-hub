@@ -1,5 +1,8 @@
 from datetime import timedelta
 from pathlib import Path
+from decouple import config
+
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,8 +17,8 @@ SECRET_KEY = 'django-insecure-*!c+^c(nz3&zpu4$yg$vyaqv*oi721ndizg*4lu7s1+$!ldg4p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-SITE_URL = 'http://localhost:8000'
+ALLOWED_HOSTS = ['*']
+SITE_URL = 'http://localhost'
 
 
 # Application definition
@@ -70,10 +73,21 @@ WSGI_APPLICATION = 'imagehub.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('MYSQL_DATABASE'),
+        'USER': config('MYSQL_USER'),
+        'PASSWORD': config('MYSQL_PASSWORD'),
+        'HOST': config('MYSQL_HOST'),
+        'PORT': config('MYSQL_PORT')
     }
 }
 
@@ -112,10 +126,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+# STATIC_ROOT = BASE_DIR / 'static'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'main/static'
+    BASE_DIR / 'static'
 ]
 
 # Default primary key field type
